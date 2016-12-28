@@ -1,1 +1,1 @@
-FROM jshimko/meteor-launchpad:latest
+FROM rocketchat/base:4
