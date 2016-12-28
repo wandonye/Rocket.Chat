@@ -1,0 +1,13 @@
+{
+  "memory": 256,
+  "portMappings": [
+    {
+      "hostPort": 80,
+      "containerPort": 80,
+      "protocol": "tcp"
+    }
+  ],
+  "name": "demo",
+  "image": "irlrobot/dockertest:0.9.0",
+  "cpu": 10
+}
