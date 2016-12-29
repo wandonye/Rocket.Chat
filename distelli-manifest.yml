@@ -1,0 +1,14 @@
+wandonye/linknitive:
+
+  Build:
+    # Enter your build steps here!
+    - docker login -u "$DISTELLI_DOCKER_USERNAME" -p "$DISTELLI_DOCKER_PW" -e "$DISTELLI_DOCKER_EMAIL" $DISTELLI_DOCKER_ENDPOINT
+    - sudo curl https://install.meteor.com | /bin/sh
+    - echo "--Creating Docker Image--"
+    - docker build --quiet=false -t "$DISTELLI_DOCKER_REPO" "$DISTELLI_DOCKER_PATH"
+    - docker tag "$DISTELLI_DOCKER_REPO" "$DISTELLI_DOCKER_REPO:$DISTELLI_BUILDNUM"
+    - echo "--Pushing Docker Image--"
+    - 'docker push "$DISTELLI_DOCKER_REPO:$DISTELLI_BUILDNUM"'
+
+  PkgInclude:
+    - '*'
