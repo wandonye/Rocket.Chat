@@ -4,12 +4,12 @@ ENV RC_VERSION latest
 
 MAINTAINER dongning.wang@gmail.com
 
-COPY . /build
+COPY . /build/build
 VOLUME /app/uploads
 
 USER rocketchat
 
-WORKDIR /distelli/envs/Prod/build/bundle
+WORKDIR /build/bundle
 
 # needs a mongoinstance - defaults to container linking with alias 'mongo'
 ENV MONGO_URL=mongodb://mongo:27017/rocketchat \
