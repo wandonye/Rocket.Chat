@@ -9,7 +9,7 @@ VOLUME /app/uploads
 
 USER rocketchat
 
-WORKDIR /build/bundle
+WORKDIR /distelli/envs/Prod/build/bundle
 
 # needs a mongoinstance - defaults to container linking with alias 'mongo'
 ENV MONGO_URL=mongodb://mongo:27017/rocketchat \
