@@ -4,7 +4,7 @@ ENV RC_VERSION latest
 
 MAINTAINER dongning.wang@gmail.com
 
-COPY . /build/build
+COPY . /build
 VOLUME /app/uploads
 
 USER rocketchat
