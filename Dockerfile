@@ -8,10 +8,15 @@ COPY ./bundle /app/bundle
 VOLUME /app/uploads
 
 RUN set -x \
- && cd /app/bundle/programs/server \
- && npm install \
- && npm install --save babel-runtime \
- && npm cache clear
+  && curl -SLf "https://rocket.chat/releases/${RC_VERSION}/download" -o rocket.chat.tgz \
+  && curl -SLf "https://rocket.chat/releases/${RC_VERSION}/asc" -o rocket.chat.tgz.asc \
+  && gpg --verify rocket.chat.tgz.asc \
+  && tar -zxf rocket.chat.tgz -C /tmp/app \
+  && mv /tmp/app/bundle/programs/server/npm /app/bundle/programs/server/npm \
+  && rm -rf /tmp/app rocket.chat.tgz rocket.chat.tgz.asc \
+  && cd /app/bundle/programs/server \
+  && npm install \
+  && npm cache clear
 
 USER rocketchat
 
