@@ -9,6 +9,7 @@ meteor npm install --save babel-runtime moment toastr
 npm install --$NODE_ENV
 meteor add rocketchat:internal-hubot meteorhacks:kadira
 meteor build --server https://chat.linknitive.com --directory ~/rocket.chat --architecture os.linux.x86_64
-gtar zcf ~/rocket.chat/linknitive.tar.gz ~/rocket.chat/bundle
+cd ~/rocket.chat/
+gtar zcf linknitive.tar.gz ./bundle
 # cd /var/www/rocket.chat/current
 # pm2 startOrRestart /var/www/rocket.chat/current/pm2.json
