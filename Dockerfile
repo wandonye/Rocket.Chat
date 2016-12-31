@@ -12,7 +12,7 @@ RUN set -x \
   && rm -rf linknitive.tar.gz \
   && cd /app/bundle/programs/server \
   && npm install \
-  && npm install --save babel-runtime moment toastr bcrypt \
+  && npm install --save babel-runtime moment toastr \
   && npm cache clear
 
 USER rocketchat
