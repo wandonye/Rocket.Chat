@@ -1,10 +1,10 @@
 rocketchat:
-  image: rocketchat/rocket.chat:latest
+  image: wandonye/linknitive:latest
   volumes:
     - ./uploads:/app/uploads
   environment:
     - PORT=3000
-    - ROOT_URL=http://localhost:3000
+    - ROOT_URL=https://chat.linknitive.com
     - MONGO_URL=mongodb://mongo:27017/rocketchat
     - MONGO_OPLOG_URL=mongodb://mongo:27017/local
     - MAIL_URL=smtp://smtp.email
@@ -22,7 +22,7 @@ mongo:
   image: mongo:3.2
   volumes:
    - ./data/db:/data/db
-#    - ./data/dump:/dump
+   - ./data/dump:/dump
   command: mongod --smallfiles --oplogSize 128 --replSet rs0
   labels:
     - "traefik.enable=false"
@@ -38,10 +38,11 @@ hubot:
   image: rocketchat/hubot-rocketchat:latest
   environment:
     - ROCKETCHAT_URL=rocketchat:3000
-    - ROCKETCHAT_ROOM=GENERAL
-    - ROCKETCHAT_USER=bot
-    - ROCKETCHAT_PASSWORD=botpassword
-    - BOT_NAME=bot
+    - ROCKETCHAT_ROOM=
+    - LISTEN_ON_ALL_PUBLIC=true
+    - ROCKETCHAT_USER=English.Bot
+    - ROCKETCHAT_PASSWORD=Lknnil1128
+    - BOT_NAME=Bot
 # you can add more scripts as you'd like here, they need to be installable by npm
     - EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics
   links:

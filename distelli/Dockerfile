@@ -19,7 +19,7 @@ USER rocketchat
 WORKDIR /app/bundle
 
 # needs a mongoinstance - defaults to container linking with alias 'mongo'
-ENV MONGO_URL=mongodb://db:27017/rocketchat \
+ENV MONGO_URL=mongodb://mongo:27017/rocketchat \
     HOME=/tmp \
     PORT=3000 \
     ROOT_URL=http://localhost:3000 \
