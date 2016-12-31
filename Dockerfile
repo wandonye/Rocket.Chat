@@ -7,6 +7,11 @@ MAINTAINER dongning.wang@gmail.com
 COPY ./bundle /app/bundle
 VOLUME /app/uploads
 
+RUN set -x \
+ && cd /app/bundle/programs/server \
+ && npm install \
+ && npm cache clear
+ 
 USER rocketchat
 
 WORKDIR /app/bundle
