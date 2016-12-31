@@ -4,16 +4,12 @@ ENV RC_VERSION latest
 
 MAINTAINER dongning.wang@gmail.com
 
-COPY ./bundle /app/bundle
 VOLUME /app/uploads
 
 RUN set -x \
-  && curl -SLf "https://rocket.chat/releases/${RC_VERSION}/download" -o rocket.chat.tgz \
-  && curl -SLf "https://rocket.chat/releases/${RC_VERSION}/asc" -o rocket.chat.tgz.asc \
-  && gpg --verify rocket.chat.tgz.asc \
-  && tar -zxf rocket.chat.tgz -C /tmp/app \
-  && mv /tmp/app/bundle/programs/server/npm /app/bundle/programs/server/npm \
-  && rm -rf /tmp/app rocket.chat.tgz rocket.chat.tgz.asc \
+  && curl "https://s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-179654900482/linknitive.tar.gz" -o linknitive.tar.gz
+  && tar -zxf linknitive.tar.gz -C /app \
+  && rm -rf linknitive.tar.gz \
   && cd /app/bundle/programs/server \
   && npm install \
   && npm cache clear
