@@ -10,8 +10,9 @@ VOLUME /app/uploads
 RUN set -x \
  && cd /app/bundle/programs/server \
  && npm install \
+ && npm install --save babel-runtime \
  && npm cache clear
- 
+
 USER rocketchat
 
 WORKDIR /app/bundle
