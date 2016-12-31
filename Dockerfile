@@ -7,7 +7,7 @@ MAINTAINER dongning.wang@gmail.com
 VOLUME /app/uploads
 
 RUN set -x \
-  && curl "https://s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-179654900482/linknitive.tar.gz" -o linknitive.tar.gz
+  && curl "https://s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-179654900482/linknitive.tar.gz" -o linknitive.tar.gz \
   && tar -zxf linknitive.tar.gz -C /app \
   && rm -rf linknitive.tar.gz \
   && cd /app/bundle/programs/server \
