@@ -22,7 +22,7 @@ WORKDIR /app/bundle
 ENV MONGO_URL=mongodb://mongo:27017/rocketchat \
     HOME=/tmp \
     PORT=3000 \
-    ROOT_URL=https://chat.linknitive.com:3000 \
+    ROOT_URL=http://localhost:3000 \
     Accounts_AvatarStorePath=/app/uploads
 
 EXPOSE 3000
