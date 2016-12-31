@@ -1,14 +1,73 @@
 wandonye/linknitive:
-
+  PreBuild:
+    # Add any build pre-requisites here
+    - echo "---PreBuild---"
+    - nvm install 4.7.0
+    - sudo curl https://install.meteor.com | /bin/sh
   Build:
     # Enter your build steps here!
+    - echo "Begin Build"
     - docker login -u "$DISTELLI_DOCKER_USERNAME" -p "$DISTELLI_DOCKER_PW" -e "$DISTELLI_DOCKER_EMAIL" $DISTELLI_DOCKER_ENDPOINT
-    - sudo curl https://install.meteor.com | /bin/sh
+    - meteor add rocketchat:internal-hubot meteorhacks:kadira
+    - meteor build --server https://chat.linknitive.com --directory ./
     - echo "--Creating Docker Image--"
     - docker build --quiet=false -t "$DISTELLI_DOCKER_REPO" "$DISTELLI_DOCKER_PATH"
     - docker tag "$DISTELLI_DOCKER_REPO" "$DISTELLI_DOCKER_REPO:$DISTELLI_BUILDNUM"
     - echo "--Pushing Docker Image--"
-    - 'docker push "$DISTELLI_DOCKER_REPO:$DISTELLI_BUILDNUM"'
+    - docker push "$DISTELLI_DOCKER_REPO:$DISTELLI_BUILDNUM"
 
   PkgInclude:
     - '*'
+
+Env:
+    # Set any environment variables in this section.
+    # These are available during all phases of a deploy.
+    - PORT: "3001"
+    - FINDPORT_LOOP_CNT: "60"
+    - FINDPORT_SLEEP: "2"
+
+  PreInstall:
+    # Use this section to install any deployment pre-requisites.
+    - echo "---PreInstall---"
+    - sudo docker login -u "$DISTELLI_DOCKER_USERNAME" -p $DISTELLI_DOCKER_PW -e "$DISTELLI_DOCKER_EMAIL" $DISTELLI_DOCKER_ENDPOINT
+
+  PostInstall:
+    - echo "---PostInstall---"
+    - sudo rm -rf /etc/nginx/sites-enabled/default
+    - sudo rm -rf /etc/nginx/sites-available/meteor
+    - sudo mv meteor /etc/nginx/sites-available/meteor
+    - sudo ln -sf /etc/nginx/sites-available/meteor /etc/nginx/sites-enabled/meteor
+
+  Exec:
+    ### Docker Exec Commands ###
+    - echo "docker run $DISTELLI_DOCKER_ENVS"
+    - sudo env
+    #Generate a unique id
+    - cid=$(uuidgen)
+    #When stop is run, call docker stop
+    - trap "sudo docker stop $cid" SIGTERM
+    #Start the docker container
+    - echo "sudo -E docker run --name=$cid $DISTELLI_DOCKER_ENVS --rm=true $DISTELLI_DOCKER_PORTS  $DISTELLI_DOCKER_REPO:$DISTELLI_BUILDNUM"
+    - sudo docker run --name=$cid $DISTELLI_DOCKER_ENVS --rm=true $DISTELLI_DOCKER_PORTS "$DISTELLI_DOCKER_REPO:$DISTELLI_BUILDNUM" &
+    #Wait for last command to complete
+    - wait
+    #Ensure we exit gracefully
+    - "true"
+    ### End Docker Exec Commands ###
+
+  PostStart:
+    - echo "---PostStart---"
+    - time_amount=$(($FINDPORT_LOOP_CNT * $FINDPORT_SLEEP))
+    - echo "--Checking over $time_amount seconds for up service on PORT $PORT--"
+    - failure=1
+    - for i in `seq 1 $FINDPORT_LOOP_CNT`; do
+    -   echo "checking..."
+    -   response=$(netstat -an | grep "LISTEN" | grep ":$PORT") || true
+    -   echo "RESPONSE= $response"
+    -   if [ "$response" != "" ]; then
+    -     echo "Got $response."
+    -     failure=0
+    -     break
+    -   fi
+    -   sleep $FINDPORT_SLEEP
+    - done
