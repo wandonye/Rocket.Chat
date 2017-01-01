@@ -5,11 +5,9 @@ ENV RC_VERSION latest
 MAINTAINER dongning.wang@gmail.com
 
 VOLUME /app/uploads
+COPY ./bundle /app/bundle
 
 RUN set -x \
-  && curl "https://s3-us-west-2.amazonaws.com/elasticbeanstalk-us-west-2-179654900482/linknitive.tar.gz" -o linknitive.tar.gz \
-  && tar -zxf linknitive.tar.gz -C /app \
-  && rm -rf linknitive.tar.gz \
   && cd /app/bundle/programs/server \
   && npm install \
   && npm cache clear
@@ -19,7 +17,7 @@ USER rocketchat
 WORKDIR /app/bundle
 
 # needs a mongoinstance - defaults to container linking with alias 'mongo'
-ENV MONGO_URL=mongodb://mongo:27017/rocketchat \
+ENV MONGO_URL=mongodb://db:27017/rocketchat \
     HOME=/tmp \
     PORT=3000 \
     ROOT_URL=http://localhost:3000 \
