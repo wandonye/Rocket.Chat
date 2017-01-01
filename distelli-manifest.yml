@@ -11,7 +11,7 @@ wandonye/backend:
     - npm install --save babel-runtime moment toastr
     - npm install --production
     - meteor add rocketchat:internal-hubot meteorhacks:kadira
-    - meteor build --server https://chat.linknitive.com --directory ./
+    - meteor build --server https://chat.linknitive.com --directory ./distelli
     - echo "--Creating Docker Image--"
     - docker build --quiet=false -t "$DISTELLI_DOCKER_REPO" "$DISTELLI_DOCKER_PATH"
     - docker tag "$DISTELLI_DOCKER_REPO" "$DISTELLI_DOCKER_REPO:$DISTELLI_BUILDNUM"
