@@ -5,20 +5,20 @@ rocketchat:
   environment:
     - PORT=3000
     - ROOT_URL=https://chat.linknitive.com
-    - MONGO_URL=mongodb://mongo:27017/rocketchat
-    - MONGO_OPLOG_URL=mongodb://mongo:27017/local
+    - MONGO_URL=mongodb://db:27017/rocketchat
+#    - MONGO_OPLOG_URL=mongodb://mongo:27017/local
     - MAIL_URL=smtp://smtp.email
     - HTTP_PROXY=http://proxy.domain.com
     - HTTPS_PROXY=http://proxy.domain.com
   links:
-    - mongo:mongo
+    - db:db
   ports:
     - 3000:3000
   labels:
     - "traefik.backend=rocketchat"
     - "traefik.frontend.rule=Host: your.domain.tld"
 
-mongo:
+db:
   image: mongo:3.2
   volumes:
    - ./data/db:/data/db
@@ -29,9 +29,9 @@ mongo:
 
 mongo-init-replica:
   image: mongo:3.2
-  command: 'mongo mongo/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})"'
+  command: 'mongo db/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})"'
   links:
-    - mongo:mongo
+    - db:db
 
 # hubot, the popular chatbot (add the bot user first and change the password before starting this image)
 hubot:

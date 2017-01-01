@@ -8,8 +8,6 @@ wandonye/linknitive:
     # Enter your build steps here!
     - echo "Begin Build"
     - docker login -u "$DISTELLI_DOCKER_USERNAME" -p "$DISTELLI_DOCKER_PW" -e "$DISTELLI_DOCKER_EMAIL" $DISTELLI_DOCKER_ENDPOINT
-    - npm install --save babel-runtime moment toastr
-    - npm install --production
     - meteor add rocketchat:internal-hubot meteorhacks:kadira
     - meteor build --server https://chat.linknitive.com --directory ./
     - echo "--Creating Docker Image--"
@@ -21,14 +19,12 @@ wandonye/linknitive:
   PkgInclude:
     - '*'
 
-  Env:
+Env:
     # Set any environment variables in this section.
     # These are available during all phases of a deploy.
-    - PORT: "3000"
+    - PORT: "3001"
     - FINDPORT_LOOP_CNT: "60"
     - FINDPORT_SLEEP: "2"
-    - MONGO_URL : "mongodb://localhost:27017/rocketchat"
-    - ROOT_URL : "https://chat.linknitive.com"
 
   PreInstall:
     # Use this section to install any deployment pre-requisites.
@@ -43,8 +39,20 @@ wandonye/linknitive:
     - sudo ln -sf /etc/nginx/sites-available/meteor /etc/nginx/sites-enabled/meteor
 
   Exec:
-    - cd $DISTELLI_INSTALLHOME
-    - sudo /usr/local/bin/docker-compose up
+    ### Docker Exec Commands ###
+    - echo "docker run $DISTELLI_DOCKER_ENVS"
+    - sudo env
+    #Generate a unique id
+    - cid=$(uuidgen)
+    #When stop is run, call docker stop
+    - trap "sudo docker stop $cid" SIGTERM
+    #Start the docker container
+    - echo "sudo -E docker run --name=$cid $DISTELLI_DOCKER_ENVS --rm=true $DISTELLI_DOCKER_PORTS  $DISTELLI_DOCKER_REPO:$DISTELLI_BUILDNUM"
+    - sudo docker run --name=$cid $DISTELLI_DOCKER_ENVS --rm=true $DISTELLI_DOCKER_PORTS "$DISTELLI_DOCKER_REPO:$DISTELLI_BUILDNUM" &
+    #Wait for last command to complete
+    - wait
+    #Ensure we exit gracefully
+    - "true"
     ### End Docker Exec Commands ###
 
   PostStart:

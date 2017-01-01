@@ -5,7 +5,7 @@ ENV RC_VERSION latest
 MAINTAINER dongning.wang@gmail.com
 
 VOLUME /app/uploads
-COPY ./bundle /app/bundle
+COPY ../bundle /app/bundle
 
 RUN set -x \
   && cd /app/bundle/programs/server \
