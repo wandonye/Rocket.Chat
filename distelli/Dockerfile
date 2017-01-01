@@ -10,7 +10,6 @@ COPY ./bundle /app/bundle
 RUN set -x \
   && cd /app/bundle/programs/server \
   && npm install \
-  && npm install bcrypt \
   && npm cache clear
 
 USER rocketchat
