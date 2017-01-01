@@ -8,7 +8,6 @@ wandonye/backend:
     # Enter your build steps here!
     - echo "Begin Build"
     - docker login -u "$DISTELLI_DOCKER_USERNAME" -p "$DISTELLI_DOCKER_PW" -e "$DISTELLI_DOCKER_EMAIL" $DISTELLI_DOCKER_ENDPOINT
-    - npm install --save babel-runtime moment toastr
     - npm install --production
     - meteor add rocketchat:internal-hubot meteorhacks:kadira
     - meteor build --server https://chat.linknitive.com --directory ./distelli
