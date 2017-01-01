@@ -3,7 +3,7 @@ version: '2'
 services:
   rocketchat:
     image: "wandonye/linknitive:latest"
-    restart: unless-stopped
+#    restart: unless-stopped
     volumes:
       - ./uploads:/app/uploads
     environment:
@@ -24,7 +24,7 @@ services:
 
   db:
     image: mongo:3.2
-    restart: unless-stopped
+#    restart: unless-stopped
     volumes:
      - ./data/db:/data/db
      - ./data/dump:/dump
@@ -41,7 +41,7 @@ services:
   # hubot, the popular chatbot (add the bot user first and change the password before starting this image)
   hubot:
     image: rocketchat/hubot-rocketchat:latest
-    restart: unless-stopped
+#    restart: unless-stopped
     environment:
       - ROCKETCHAT_URL=rocketchat:3000
       - ROCKETCHAT_ROOM=

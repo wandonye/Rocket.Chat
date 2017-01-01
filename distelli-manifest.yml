@@ -45,7 +45,7 @@ wandonye/backend:
   Exec:
     - cd $DISTELLI_INSTALLHOME
     - echo "Up docker-compose for $DISTELLI_DOCKER_REPO:$DISTELLI_BUILDNUM and other images"
-    - sudo /usr/local/bin/docker-compose up
+    - sudo /usr/local/bin/docker-compose up --rm=true
 
   PostStart:
     - echo "---PostStart---"
