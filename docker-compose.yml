@@ -28,7 +28,7 @@ services:
     volumes:
      - ./data/db:/data/db
      - ./data/dump:/dump
-    command: mongod --smallfiles --oplogSize 128 --replSet rs0
+    command: mongod --smallfiles
     labels:
       - "traefik.enable=false"
 
