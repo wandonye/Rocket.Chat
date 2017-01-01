@@ -1,4 +1,4 @@
-wandonye/linknitive:
+wandonye/backend:
   PreBuild:
     # Add any build pre-requisites here
     - echo "---PreBuild---"
