@@ -45,7 +45,6 @@ wandonye/linknitive:
   Exec:
     - cd $DISTELLI_INSTALLHOME
     - sudo /usr/local/bin/docker-compose up
-    ### End Docker Exec Commands ###
 
   PostStart:
     - echo "---PostStart---"
