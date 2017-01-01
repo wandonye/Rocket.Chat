@@ -1,5 +1,5 @@
 rocketchat:
-  image: ${DISTELLI_DOCKER_REPO}:${DISTELLI_BUILDNUM}
+  image: "wandonye/linknitive:${DISTELLI_BUILDNUM}"
   volumes:
     - ./uploads:/app/uploads
   environment:
